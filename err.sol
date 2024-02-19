@@ -1,5 +1,4 @@
 // SPDX-License-Identifier: MIT
-//0x0000000000000000000000000000000000000000
 
 pragma solidity ^0.8.13;
 
@@ -16,26 +15,21 @@ contract ErrorHandlingContract {
         contractOwner = msg.sender;
     }
 
-    function contribute() 
-        public 
-        payable
+    function contributeToContract() public payable
     {
         storageBalances[msg.sender] += msg.value;
-        require(msg.value > 2000 wei, "Insufficient storage balance");
+        require(msg.value > 1000 wei, "Storage balance: Insufficient");
     }
 
-    function addNewMember(address _newMember) 
-        public 
-        payable
+    function addNewMember(address _newMember) public payable
     {
         storageBalances[_newMember] += msg.value;
-        require(_newMember != address(0), "Invalid address");
+        require(storageBalances[_newMember] == 0, "Address already contributed");
     }
 
-    function changeContractOwner(address _newOwner) 
-        public
+    function changeContractOwner(address _newOwner) public
     {
-        require(msg.sender == contractOwner, "You are not the owner");
+        require(msg.sender == contractOwner, "You are not authorized");
         contractOwner = _newOwner;
     }
 }
