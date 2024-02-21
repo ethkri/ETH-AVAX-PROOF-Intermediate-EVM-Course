@@ -18,13 +18,16 @@ contract ErrorHandlingContract {
     function contributeToContract() public payable
     {
         storageBalances[msg.sender] += msg.value;
-        require(msg.value > 1000 wei, "Storage balance: Insufficient");
+        if(msg.value <= 1000 wei){
+
+            revert("The amount should be greater than 1000 Wei");
+        }
     }
 
     function addNewMember(address _newMember) public payable
     {
         storageBalances[_newMember] += msg.value;
-        require(storageBalances[_newMember] == 0, "Address already contributed");
+         assert (storageBalances[_newMember] == 0);
     }
 
     function changeContractOwner(address _newOwner) public
@@ -32,4 +35,4 @@ contract ErrorHandlingContract {
         require(msg.sender == contractOwner, "You are not authorized");
         contractOwner = _newOwner;
     }
-}
+}t
